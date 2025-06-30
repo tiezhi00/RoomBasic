@@ -22,9 +22,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        wordViewModel = new ViewModelProvider(this).get(WordViewModel.class);
         //RecyclerView初始化
-        myAdapterNormal = new MyAdapter(false);
-        myAdapterCard = new MyAdapter(true);
+        myAdapterNormal = new MyAdapter(false, wordViewModel);
+        myAdapterCard = new MyAdapter(true, wordViewModel);
         binding.rvWords.setAdapter(myAdapterNormal);
         binding.rvWords.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
         //switch切换布局
@@ -39,12 +40,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //初始化ViewModel
-        wordViewModel = new ViewModelProvider(this).get(WordViewModel.class);
         wordViewModel.getAllWordsLive().observe(this, words -> {
+            int temp = myAdapterNormal.getItemCount();
             myAdapterNormal.setList(words);
             myAdapterCard.setList(words);
-            myAdapterNormal.notifyDataSetChanged();
-            myAdapterCard.notifyDataSetChanged();
+            if(temp!= words.size()) {
+                myAdapterNormal.notifyDataSetChanged();
+                myAdapterCard.notifyDataSetChanged();
+            }
         });
 
         binding.btnAdd.setOnClickListener(v -> {
