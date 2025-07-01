@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.app.roombasic"
+    namespace = "com.app.words"
     compileSdk = 34
 
     defaultConfig {
@@ -36,6 +36,8 @@ android {
 
 dependencies {
 
+    implementation ("androidx.navigation:navigation-fragment:2.5.3")
+    implementation ("androidx.navigation:navigation-ui:2.5.3")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

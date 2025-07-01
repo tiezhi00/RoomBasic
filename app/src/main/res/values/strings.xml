@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">RoomBasic</string>
+    <string name="app_name">Words</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_title">添加单词</string>
+    <string name="add_english_hint">English Word</string>
+    <string name="add_chinese_hint">中文释义</string>
+    <string name="add_button">提交</string>
+
+
 </resources>

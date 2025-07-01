@@ -1,4 +1,4 @@
-package com.app.roombasic.viewmodel;
+package com.app.words.viewmodel;
 
 import android.app.Application;
 
@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.app.roombasic.room.Word;
-import com.app.roombasic.room.WordReposity;
+import com.app.words.room.Word;
+import com.app.words.room.WordReposity;
 
 import java.util.List;
 

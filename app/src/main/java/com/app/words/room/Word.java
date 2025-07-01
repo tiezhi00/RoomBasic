@@ -1,4 +1,4 @@
-package com.app.roombasic.room;
+package com.app.words.room;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
