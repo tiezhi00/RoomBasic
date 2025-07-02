@@ -13,16 +13,18 @@ import java.util.List;
 
 public class WordViewModel extends AndroidViewModel {
     private WordReposity wordReposity;
-    private LiveData<List<Word>> allWordsLive;
 
     public WordViewModel(@NonNull Application application) {
         super(application);
         wordReposity = new WordReposity(application);
-        allWordsLive = wordReposity.getAllWordsLive(); //获取所有单词的LiveData
     }
 
     public LiveData<List<Word>> getAllWordsLive() {
-        return allWordsLive;
+        return wordReposity.getAllWordsLive();
+    }
+
+    public LiveData<List<Word>> getSearchWordsLive(String search) {
+        return wordReposity.searchWords(search);
     }
 
     public void addWords(Word... words) {

@@ -35,6 +35,10 @@ public class WordReposity {
     public void clearWords() {
         new ClearAsyncTak(wordDao).execute();
     }
+    public LiveData<List<Word>> searchWords(String search){
+        return wordDao.searchWords("%"+search+"%");
+    }
+
 
     private static class AddAsyncTask extends AsyncTask<Word, Void, Void> {
         private final WordDao wordDao;
