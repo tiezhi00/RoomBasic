@@ -139,8 +139,11 @@ public class WordsFragment extends Fragment {
                 myAdapterCard.setList(words);
                 //更新RecyclerView数据
                 if (temp != words.size()) {
-                    myAdapterNormal.notifyDataSetChanged();
-                    myAdapterCard.notifyDataSetChanged();
+//                    myAdapterNormal.notifyDataSetChanged();
+//                    myAdapterCard.notifyDataSetChanged();
+                    binding.rvWords.smoothScrollBy(0,-200);
+                    myAdapterNormal.notifyItemInserted(0);
+                    myAdapterCard.notifyItemInserted(0);
                 }
             }
         });
