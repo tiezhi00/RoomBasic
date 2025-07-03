@@ -13,7 +13,10 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,6 +31,7 @@ import com.app.words.adapter.MyAdapter;
 import com.app.words.databinding.FragmentWordsBinding;
 import com.app.words.room.Word;
 import com.app.words.viewmodel.WordViewModel;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -41,6 +45,9 @@ public class WordsFragment extends Fragment {
     private static final String SP_VIEW_TYPE = "sp_view_type";
     private static final String IS_CARD_VIEW = "is_card_view";
     private SharedPreferences sp;
+    private List<Word> currentWordList;
+    //分隔线装饰
+    private DividerItemDecoration dividerItemDecoration;
 
 
     @Override
@@ -74,7 +81,13 @@ public class WordsFragment extends Fragment {
         } else if (itemId == R.id.mi_changeview) {
             //切换视图
             boolean isCardView = sp.getBoolean(IS_CARD_VIEW, false);
-            binding.rvWords.setAdapter(isCardView ? myAdapterNormal : myAdapterCard);
+            if (isCardView) {//换成非的更容易理解
+                binding.rvWords.addItemDecoration(dividerItemDecoration);
+                binding.rvWords.setAdapter(myAdapterNormal);
+            } else {
+                binding.rvWords.removeItemDecoration(dividerItemDecoration);
+                binding.rvWords.setAdapter(myAdapterCard);
+            }
             SharedPreferences.Editor editor = sp.edit();
             editor.putBoolean(IS_CARD_VIEW, !isCardView);
             editor.apply();
@@ -102,14 +115,15 @@ public class WordsFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 //模糊查询Words列表，并更新适配器
                 String search = newText.trim();
-                wordViewModel.getAllWordsLive().removeObservers(requireActivity());
-                wordViewModel.getSearchWordsLive(search).observe(requireActivity(), new Observer<List<Word>>() {
+                wordViewModel.getAllWordsLive().removeObservers(getViewLifecycleOwner());
+                wordViewModel.getSearchWordsLive(search).observe(getViewLifecycleOwner(), new Observer<List<Word>>() {
                     @Override
                     public void onChanged(List<Word> words) {
                         int temp = myAdapterNormal.getItemCount();
+                        myAdapterNormal.setList(words);
+                        myAdapterCard.setList(words);
+                        currentWordList = words;
                         if (temp != words.size()) {
-                            myAdapterNormal.setList(words);
-                            myAdapterCard.setList(words);
                             myAdapterNormal.notifyDataSetChanged();
                             myAdapterCard.notifyDataSetChanged();
                         }
@@ -131,19 +145,20 @@ public class WordsFragment extends Fragment {
         myAdapterNormal = new MyAdapter(false, wordViewModel);
         myAdapterCard = new MyAdapter(true, wordViewModel);
         sp = requireActivity().getSharedPreferences(SP_VIEW_TYPE, Context.MODE_PRIVATE);
-        wordViewModel.getAllWordsLive().observe(requireActivity(), new Observer<List<Word>>() {
+        wordViewModel.getAllWordsLive().observe(getViewLifecycleOwner(), new Observer<List<Word>>() {
             @Override
             public void onChanged(List<Word> words) {
                 int temp = myAdapterNormal.getItemCount();
                 myAdapterNormal.setList(words);
                 myAdapterCard.setList(words);
+                currentWordList = words;
                 //更新RecyclerView数据
                 if (temp != words.size()) {
-//                    myAdapterNormal.notifyDataSetChanged();
-//                    myAdapterCard.notifyDataSetChanged();
-                    binding.rvWords.smoothScrollBy(0,-200);
-                    myAdapterNormal.notifyItemInserted(0);
-                    myAdapterCard.notifyItemInserted(0);
+                    myAdapterNormal.notifyDataSetChanged();
+                    myAdapterCard.notifyDataSetChanged();
+//                    binding.rvWords.smoothScrollBy(0,-200);
+//                    myAdapterNormal.notifyItemInserted(0);
+//                    myAdapterCard.notifyItemInserted(0);
                 }
             }
         });
@@ -156,6 +171,55 @@ public class WordsFragment extends Fragment {
                 navController.navigate(R.id.action_wordsFragment_to_addFragment);
             }
         });
+        //设置Item的滑动事件
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.START | ItemTouchHelper.END) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+//                Word wordFrom = currentWordList.get(viewHolder.getAdapterPosition());
+//                Word wordTo = currentWordList.get(target.getAdapterPosition());
+//                int idTemp= wordFrom.getId();
+//                wordFrom.setId(wordTo.getId());
+//                wordTo.setId(idTemp);
+//                wordViewModel.updateWords (wordFrom,wordTo);
+//                myAdapterNormal.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+//                myAdapterCard.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+                //上述对数据库的操作是异步的，可能会导致视图与数据不一致，因此不建议使用上述方式
+                //可以在拖动时仅修改视图---也就是adapter，点击确认后再去修改数据库
+                // 获取当前项和目标项的视图位置
+                int fromPosition = viewHolder.getAdapterPosition();
+                int toPosition = target.getAdapterPosition();
+
+                // 仅交换视图位置（不更新数据）
+                RecyclerView.Adapter adapter = recyclerView.getAdapter();
+                if (adapter != null) {
+                    adapter.notifyItemMoved(fromPosition, toPosition);
+                    return true; // 表示已处理移动
+                }
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                //删除单词
+                Word word = currentWordList.get(viewHolder.getLayoutPosition());
+                wordViewModel.deleteWords(word);
+                //SnackBar提示
+                Snackbar.make(binding.getRoot(), "删除了一个词汇",
+                                Snackbar.LENGTH_SHORT)
+                        .setAction("撤销", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //撤销删除
+                                wordViewModel.addWords(word);
+                            }
+                        }).show();
+
+            }
+        }).attachToRecyclerView(binding.rvWords);
+        //设置分隔线
+        dividerItemDecoration = new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL);
+        //绘制滑动的背景图
+        //...
 
     }
 
@@ -163,7 +227,12 @@ public class WordsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         boolean isCardView = sp.getBoolean(IS_CARD_VIEW, false);
-        binding.rvWords.setAdapter(isCardView ? myAdapterCard : myAdapterNormal);
+        if (isCardView) {
+            binding.rvWords.setAdapter(myAdapterCard);
+        } else {
+            binding.rvWords.setAdapter(myAdapterNormal);
+            binding.rvWords.addItemDecoration(dividerItemDecoration);
+        }
     }
     //    @Override
 //    public void onActivityCreated(@Nullable Bundle savedInstanceState) {

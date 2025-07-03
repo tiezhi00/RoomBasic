@@ -27,7 +27,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     List<Word> list = new ArrayList<>();
     private boolean isCardView = false;
     private WordViewModel viewModel;
-    private static  final int TAG_KEY_WORD = 1;
+    private static final int TAG_KEY_WORD = 1;
+
     public MyAdapter(boolean isCardView, WordViewModel viewModel) {
         this.isCardView = isCardView;
         this.viewModel = viewModel;
@@ -45,9 +46,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         //根据isCardView的值选择不同的布局
         View itemView;
         if (isCardView) {
-            itemView=inflater.inflate(R.layout.item_word_card, parent, false);
+            itemView = inflater.inflate(R.layout.item_word_card, parent, false);
         } else {
-            itemView=inflater.inflate(R.layout.item_word, parent, false);
+            itemView = inflater.inflate(R.layout.item_word, parent, false);
         }
         MyViewHolder holder = new MyViewHolder(itemView);
         //设置item的点击事件
@@ -67,12 +68,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Word word = (Word) holder.itemView.getTag();
-                if(isChecked){
+                if (isChecked) {
                     //不可见
                     holder.tv_chinese.setVisibility(View.GONE);
                     word.setChineseInvisible(true);
                     viewModel.updateWords(word);
-                }else{
+                } else {
                     //可见
                     holder.tv_chinese.setVisibility(View.VISIBLE);
                     word.setChineseInvisible(false);
@@ -93,12 +94,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.tv_id.setText(position + 1 + "");
         holder.tv_english.setText(word.getWord());
         holder.tv_chinese.setText(word.getChineseMeaning());
-        holder.sw_removeChinese.setOnCheckedChangeListener(null); //先移除监听器，避免重复触发
-        if(word.isChineseInvisible()){
+//        holder.sw_removeChinese.setOnCheckedChangeListener(null); //先移除监听器，避免重复触发
+        if (word.isChineseInvisible()) {
             //中文不可见
             holder.tv_chinese.setVisibility(View.GONE);
             holder.sw_removeChinese.setChecked(true);
-        }else{
+        } else {
             holder.tv_chinese.setVisibility(View.VISIBLE);
             holder.sw_removeChinese.setChecked(false);
         }
@@ -120,7 +121,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             tv_id = itemView.findViewById(R.id.tv_id);
             tv_english = itemView.findViewById(R.id.tv_english);
             tv_chinese = itemView.findViewById(R.id.tv_chinese);
-            sw_removeChinese=itemView.findViewById(R.id.sw_removeChinese);
+            sw_removeChinese = itemView.findViewById(R.id.sw_removeChinese);
         }
 
     }

@@ -13,13 +13,13 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 @Database(entities = {Word.class}, version = 5, exportSchema = false)
 public abstract class WordDatabase extends RoomDatabase {
     private static WordDatabase instance;
-    private static final Migration MIGRATION_2_3=new Migration(2,3) {
+    private static final Migration MIGRATION_2_3 = new Migration(2, 3) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {//添加字段
             database.execSQL("ALTER TABLE word ADD COLUM bar_data INTEGER NOT NULL DEFAULT 1");
         }
     };
-    private static final Migration MIGRATION_3_4=new Migration(3,4) {
+    private static final Migration MIGRATION_3_4 = new Migration(3, 4) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {//删除字段
             database.execSQL("CREATE TABLE word_temp (id INTEGER PRIMARY KEY NOT NULL, english_word TEXT, chinese_meaning TEXT)");
@@ -28,7 +28,7 @@ public abstract class WordDatabase extends RoomDatabase {
             database.execSQL("ALTER TABLE word_temp RENAME TO word");
         }
     };
-    private static final Migration MIGRATION_4_5=new Migration(4,5) {
+    private static final Migration MIGRATION_4_5 = new Migration(4, 5) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("ALTER TABLE word ADD COLUM chinese_invisiable INTEGER NOT NULL DEFAULT 0");

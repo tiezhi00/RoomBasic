@@ -31,8 +31,9 @@ public interface WordDao {
 //查询所有单词，按id降序排列
 //    List<Word> getAllWords();//获取所有单词
     LiveData<List<Word>> getAllWordsLive();//获取所有单词，按id降序排列
+
     @Query("SELECT * FROM WORD WHERE english_word Like :search ORDER BY id DESC")
-    //模糊查询单词
+        //模糊查询单词
     LiveData<List<Word>> searchWords(String search);//模糊查询单词，按id降序排列
 
 }

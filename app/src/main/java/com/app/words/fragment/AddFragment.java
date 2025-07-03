@@ -69,14 +69,14 @@ public class AddFragment extends Fragment {
         };
         binding.etEnglish.addTextChangedListener(textWatcher);
         binding.etChinese.addTextChangedListener(textWatcher);
-        wordViewModel= new ViewModelProvider(requireActivity()).get(WordViewModel.class);
+        wordViewModel = new ViewModelProvider(requireActivity()).get(WordViewModel.class);
         //设置提交按钮点击事件
         binding.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               //添加单词，并退出界面
-                wordViewModel.addWords(new Word(binding.etEnglish.getText().toString(),binding.etChinese.getText().toString()));
-                NavController navController= Navigation.findNavController(v);
+                //添加单词，并退出界面
+                wordViewModel.addWords(new Word(binding.etEnglish.getText().toString(), binding.etChinese.getText().toString()));
+                NavController navController = Navigation.findNavController(v);
                 navController.navigateUp();
             }
         });
@@ -96,6 +96,6 @@ public class AddFragment extends Fragment {
     public void onStop() {
         super.onStop();
         //不可见时隐藏输入法
-        imm.hideSoftInputFromWindow(getView().getWindowToken(),0);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 }

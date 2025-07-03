@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_words"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -12,49 +13,48 @@
         android:layout_width="match_parent"
         android:layout_height="500dp" />
 
-<!--    <Button-->
-<!--        android:id="@+id/btn_Add"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:text="Add" />-->
+    <!--    <Button-->
+    <!--        android:id="@+id/btn_Add"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="center"-->
+    <!--        android:text="Add" />-->
 
-<!--    <Button-->
-<!--        android:id="@+id/btn_update"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:text="Update" />-->
+    <!--    <Button-->
+    <!--        android:id="@+id/btn_update"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="center"-->
+    <!--        android:text="Update" />-->
 
-<!--    <Button-->
-<!--        android:id="@+id/btn_delete"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:text="Delete" />-->
+    <!--    <Button-->
+    <!--        android:id="@+id/btn_delete"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="center"-->
+    <!--        android:text="Delete" />-->
 
-<!--    <Button-->
-<!--        android:id="@+id/btn_clear"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:text="Clear" />-->
-    <Switch
-        android:id="@+id/sw_card"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="CardView"/>
+    <!--    <Button-->
+    <!--        android:id="@+id/btn_clear"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="center"-->
+    <!--        android:text="Clear" />-->
+    <!--    <Switch-->
+    <!--        android:id="@+id/sw_card"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="center_horizontal"-->
+    <!--        android:text="CardView"/>-->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:src="@drawable/ic_add_white"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_margin="16dp"
         android:backgroundTint="@color/red"
-        />
+        android:clickable="true"
+        android:src="@drawable/ic_add_white" />
 
 </LinearLayout>

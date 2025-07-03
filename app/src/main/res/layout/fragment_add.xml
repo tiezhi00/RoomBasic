@@ -14,34 +14,34 @@
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/add_title"
-        android:gravity="center_horizontal"
         android:layout_marginBottom="10dp"
-        android:textSize="@dimen/front_title"/>
+        android:gravity="center_horizontal"
+        android:text="@string/add_title"
+        android:textSize="@dimen/front_title" />
 
     <EditText
         android:id="@+id/et_english"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:hint="@string/add_english_hint"
-        android:inputType="text"
-        android:layout_marginBottom="10dp"/>
+        android:inputType="text" />
 
 
     <EditText
         android:id="@+id/et_chinese"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:hint="@string/add_chinese_hint"
-        android:inputType="text"
-        android:layout_marginBottom="10dp"/>
+        android:inputType="text" />
 
 
     <Button
         android:id="@+id/btn_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/add_button"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:text="@string/add_button" />
 
 </LinearLayout>
